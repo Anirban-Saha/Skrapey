@@ -1,14 +1,17 @@
 import puppeteer from 'puppeteer';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function POST(req) {
   let browser;
   try {
+    const { url } = await req.json();
+   console.log(url);
     browser = await puppeteer.launch();
     const [page] = await browser.pages();
     page.setDefaultNavigationTimeout(2 * 60 * 1000);
-    await page.goto('https://twitter.com/home', { waitUntil: 'networkidle0' });
-    const htmlContent = await page.evaluate(() => document.querySelector('*').outerHTML);
+    const processedUrl = url.startsWith("http") ? url : `https://${url}`;
+    await page.goto(`${processedUrl}`, { waitUntil: 'networkidle0' });
+    const htmlContent = await page.evaluate(() => document.querySelector('body').outerHTML);
     console.log(htmlContent);
     // Return the HTML content as a response
     return new NextResponse(htmlContent, {

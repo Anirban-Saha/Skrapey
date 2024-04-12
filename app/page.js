@@ -2,7 +2,7 @@
 "use client"
 
 import { useState } from 'react';
-import axios from 'axios'; // Assuming you have axios installed
+import axios from 'axios'; 
 
 export default function Page() {
   const [url, setUrl] = useState('');
@@ -25,6 +25,7 @@ export default function Page() {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="Enter URL"
+        className='text-red-800'
       />
       <button onClick={fetchData}>Fetch Data</button>
       <div>
